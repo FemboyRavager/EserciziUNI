@@ -1,0 +1,16 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+	int a=0, b=0;
+	cout<<"Seguire le istruzioni. Dare come input caratteri non int terminerà il programma prematuramente\n";
+	cout<<"Inserire primo intero\n";
+	cin>>a;
+	cout<<"Inserire secondo intero\n";
+	cin>>b;
+	float mean=((float)a+(float)b)/2;		//Casting in float necessario altrimenti a e b trattati come int e non consentono parte decimale pur divisi per 2
+	cout<<"La media e': "<<mean<<endl;
+	
+	return 0;
+	
+}
