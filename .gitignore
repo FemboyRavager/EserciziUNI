@@ -1,3 +1,4 @@
 *.sh
 **/*.zip
 **/*.out
+**/TramontaE-LAB*
