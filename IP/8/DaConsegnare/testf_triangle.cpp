@@ -4,11 +4,11 @@ using namespace std;
 
 void triangle(int len) {
 
-  for (int i=1;i<=len;i++) {
-    for (int j=1; j<=i; j++) {
-      cout<<"*";
+  for (int i = 1; i <= len; i++) {
+    for (int j = 1; j <= i; j++) {
+      cout << "*";
     }
-    cout<<endl;
+    cout << endl;
   }
 }
 
@@ -21,5 +21,5 @@ int main() {
   else
     cout << "Errore: numero non maggiore di 0";
 
-        return 0;
+  return 0;
 }
