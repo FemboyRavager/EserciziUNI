@@ -2,12 +2,17 @@
 
 using namespace std;
 
-void triangle(int len) {
+void replicate(int N, char c) {
+  if (N <= 0)
+    return;
+  for (int i = 0; i < N; i++) {
+    cout << c;
+  }
+}
 
+void triangle(int len) {
   for (int i = 1; i <= len; i++) {
-    for (int j = 1; j <= i; j++) {
-      cout << "*";
-    }
+    replicate(i, '*');
     cout << endl;
   }
 }
@@ -16,10 +21,10 @@ int main() {
   cout << "Inserisci un numero maggiore di 0: ";
   int len = 0;
   cin >> len;
-  if (len >= 0)
+  if (len > 0)
     triangle(len);
   else
-    cout << "Errore: numero non maggiore di 0";
+    cout << "Errore: numero non maggiore di 0\n";
 
   return 0;
 }
