@@ -1,35 +1,52 @@
 #include <cmath>
 #include <iostream>
 using namespace std;
+// daysLeft assume che la percentuale di evap viene applicata all'attuale volume
+double daysLeft(float startingLiters, int evapPercent, float floorLiters) {
+  double days = 0, currentLiters = startingLiters, nextLiters = 0;
+  //cout << "\nEvaporation %: " << evapPercent;
+  //cout << "\nStarting with " << startingLiters;
+  nextLiters = currentLiters * ((float)1 - ((float)evapPercent / 100));
+  //cout << "\nLiters next day: " << nextLiters;
+  while (nextLiters > floorLiters) {
+    currentLiters = nextLiters;
+    nextLiters = currentLiters * ((float)1 - ((float)evapPercent / 100));
+    days++;
+    //cout << "\n\tEnd of day: " << days;
+    //cout << "\n\tCurrent liters: " << currentLiters;
+    //cout << "\n\tLiters next day: " << nextLiters;
+    //cout << endl;
+  }
 
-struct Punto {
-  double x, y;
-};
+  return days;
+}
+// daysLeftAlt assume che la % è applicata al valore iniziale
+double daysLeftAlt(float startingLiters, int evapPercent, float floorLiters) {
+  double days = 0, currentLiters = startingLiters, nextLiters = 0,
+         evapPerDay = 0;
+  evapPerDay = startingLiters * ((float)evapPercent / 100);
+  //cout << "\nEvaporation %: " << evapPercent<<" equal to "<<evapPerDay<<" liters";
+  //cout << "\nStarting with " << startingLiters;
+  nextLiters = currentLiters * ((float)1 - ((float)evapPercent / 100));
+  //cout << "\nLiters next day: " << nextLiters;
+  while (nextLiters > floorLiters) {
+    currentLiters = nextLiters;
+    nextLiters = currentLiters - evapPerDay;
+    days++;
+    //cout << "\n\tEnd of day: " << days;
+    //cout << "\n\tCurrent liters: " << currentLiters;
+    //cout << "\n\tLiters next day: " << nextLiters;
+    //cout << endl;
+  }
 
-double dist(Punto p1, Punto p2) {
-  double dist = 0;
-  dist = sqrt(pow(p1.x - p2.x,2) + pow(p1.y - p2.y,2));
-  cout<<endl<<"\t dist:"<<dist<<endl;
-  return dist;
+  return days;
 }
 
 int main() {
-  const int N = 4;
-  double tot = 0;
-  Punto input[N] = {};
-  for (int i = 0; i < N; i++) {
-    cout << endl << i + 1 << ".x:";
-    cin >> input[i].x;
-    cout << i + 1 << ".y:";
-    cin >> input[i].y;
-  }
-  for (int i = 0; i < N; i++) {
-    cout << endl << i + 1 << ": " << input[i].x << "." << input[i].y << endl;
-  }
-
-  for (int i = 0; i < N - 1; i++) {
-    cout<<endl<<"Current tot"<<tot;
-    tot += dist(input[i], input[i + 1]);
-  }
-  cout << endl << "La lunghezza della spezzata e'" << tot;
+  const float startingLiters = 100, floorLiters = 10;
+  const int evaporationPercentage = 1;
+  double days = daysLeft(startingLiters, evaporationPercentage, floorLiters);
+  cout << "L'evaporatore puo' operare per " << days << " giorni assumendo che la percentuale di evaporazione e' applicata al volume giornaliero\n";
+  days = daysLeftAlt(startingLiters, evaporationPercentage, floorLiters);
+  cout << "L'evaporatore puo' operare per " << days << " giorni assumendo che la percentuale di evaporazione e' applicata al volume iniziale\n";
 }
