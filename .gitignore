@@ -1,4 +1,3 @@
 *.sh
-*.zip
-*.out
-.gitignore
+**.zip
+**.out
