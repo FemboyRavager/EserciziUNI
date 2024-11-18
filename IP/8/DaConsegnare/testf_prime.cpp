@@ -28,6 +28,6 @@ int main() {
     if (isPrime(n[i])) {
       cout << endl << n[i] << " e' primo";
     } else
-	  cout << endl << n[i] << " non e' primo";
+      cout << endl << n[i] << " non e' primo";
   }
 }
