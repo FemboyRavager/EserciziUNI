@@ -26,8 +26,8 @@ int main() {
 
   for (int i = 0; i < N; i++) {
     if (isPrime(n[i])) {
-      cout << endl << n[i] << " e' primo";
+      cout << endl << n[i] << " e' primo\n";
     } else
-      cout << endl << n[i] << " non e' primo";
+      cout << endl << n[i] << " non e' primo\n";
   }
 }
