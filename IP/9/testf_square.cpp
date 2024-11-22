@@ -44,8 +44,9 @@ void square(int n) {
 }
 
 int main() {
-  const int size = 3;
+  int size = 3;
   try {
+    cin>>size;
     square(size);
   } catch (err& errore) {
     cout << "Errore valore < 1" << endl;
