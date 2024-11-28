@@ -6,7 +6,7 @@ struct err {
   string variableName;
   double variable1Value;
   double variable2Value;
-  bool bothInvalid=false;
+  bool bothInvalid = false;
 };
 
 void computeRectInfo(double l1, double l2, double &area, double &perimetro) {
@@ -50,7 +50,7 @@ int main() {
   dati[0].l2 = 10;
 
   dati[1].l1 = 20;
-  dati[1].l2 = 0;   // caso non valido
+  dati[1].l2 = 0; // caso non valido
 
   dati[2].l1 = -20; // caso non valido
   dati[2].l2 = -10; // caso non valido
@@ -66,7 +66,9 @@ int main() {
     } catch (err &error) {
       if (error.bothInvalid) {
         cout << "Errore in funzione " << error.functionName << ": variabili "
-             << error.variableName << " con valori non validi: "<<error.variable1Value<<" and "<<error.variable2Value<<endl;
+             << error.variableName
+             << " con valori non validi: " << error.variable1Value << " and "
+             << error.variable2Value << endl;
       } else {
         cout << "Errore in funzione " << error.functionName << ": variabile "
              << error.variableName
