@@ -11,14 +11,16 @@ void reverseArray(int *source, int *dest, int size) {
     *(dest + (size - i - 1)) = *(source + i);
     // dest[size - i - 1] = source[i];
   }
-  cout << "\nElementi in array source:\t";
+  cout << "\nFunzione:";
+  cout << "\n\tElementi in array source:\t";
   for (int i = 0; i < size; i++) {
-    cout << *(source + 1) << " ";
+    cout << *(source + i) << " ";
   }
-  cout << "\nElementi in array dest:\t\t";
+  cout << "\n\tElementi in array dest:\t\t";
   for (int i = 0; i < size; i++) {
     cout << *(dest + i) << " ";
   }
+  cout << "\nFine funzione";
   cout << endl << endl;
 }
 
