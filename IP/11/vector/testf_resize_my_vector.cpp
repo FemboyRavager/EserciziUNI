@@ -12,10 +12,14 @@ int main() {
       push_back_my_vector_element(myVec, i * 3);
       print_my_vector_status(myVec);
     }
-    cout << "\nNow starting popping vector of size: " << myVec.size << endl;
-    for (unsigned int i = 0; i < myVec.size + 1; i++) {
-      // cout<<endl<<"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH"<<endl;
-      pop_back_my_vector_element(myVec);
+    cout << "-------------------------------------" << endl;
+    int newCapacity = 10;
+    cout << "Now resizing to capacity: " << newCapacity << endl;
+    resize_my_vector(myVec, newCapacity);
+    print_my_vector_status(myVec);
+    cout << endl << "Now appending more values" << endl;
+    for (unsigned int i = 0; i < (newCapacity - N); i++) {
+      push_back_my_vector_element(myVec, i * 3);
       print_my_vector_status(myVec);
     }
   } catch (string &err) {

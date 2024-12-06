@@ -12,11 +12,10 @@ int main() {
       push_back_my_vector_element(myVec, i * 3);
       print_my_vector_status(myVec);
     }
-    cout << "\nNow starting popping vector of size: " << myVec.size << endl;
-    for (unsigned int i = 0; i < myVec.size + 1; i++) {
-      // cout<<endl<<"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH"<<endl;
-      pop_back_my_vector_element(myVec);
-      print_my_vector_status(myVec);
+    cout << "-------------------------------------" << endl;
+    cout << "Now getting elements by index" << endl;
+    for (unsigned int i = 0; i < myVec.size; i++) {
+      cout << "Vector[" << i << "]=" << get_my_vector_element(myVec, i) << endl;
     }
   } catch (string &err) {
     cout << err;
