@@ -15,6 +15,7 @@ int main() {
     for (unsigned int i=0; i<myVec.size; i++) {
       cout<<myVec.store[i]<<endl;
     }
+    destroy_my_vector(myVec);
   } catch (string &err) {
     cout << err;
   }

@@ -62,6 +62,7 @@ int main() {
     set_my_vector_element(myVec, value, index);
     print_my_vector_status(myVec);
 
+    destroy_my_vector(myVec);
   } catch (string &err) {
     cout << err;
   }

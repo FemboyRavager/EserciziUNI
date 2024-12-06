@@ -17,6 +17,8 @@ int main() {
     for (unsigned int i = 0; i < myVec.size; i++) {
       cout << "Vector[" << i << "]=" << get_my_vector_element(myVec, i) << endl;
     }
+
+    destroy_my_vector(myVec);
   } catch (string &err) {
     cout << err;
   }

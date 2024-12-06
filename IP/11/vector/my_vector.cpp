@@ -15,16 +15,16 @@ my_vector create_my_vector(unsigned int capacity) {
 }
 
 void print_my_vector_status(const my_vector &v) {
-  if (v.size == 0) {
-    string child = "my_vector is empty\n";
-    throw child;
-  }
   cout << "**********************" << endl;
   cout << "my_vector size = " << v.size << endl;
   cout << "my_vector capacity = " << v.capacity << endl;
   cout << "my_vector store = { ";
-  for (unsigned int i = 0; i < v.size; i++) {
-    cout << v.store[i] << (i < v.size - 1 ? ", " : " }\n");
+  if (v.size != 0) {
+    for (unsigned int i = 0; i < v.size; i++) {
+      cout << v.store[i] << (i < v.size - 1 ? ", " : " }\n");
+    }
+  } else {
+    cout <<  " }"<<endl;
   }
 }
 
@@ -46,7 +46,7 @@ double pop_back_my_vector_element(my_vector &v) {
     throw child;
   } else {
     v.size--;
-    return v.store[v.size - 1];
+    return v.store[v.size];
   }
 }
 

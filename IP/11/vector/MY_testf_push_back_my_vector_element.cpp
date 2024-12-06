@@ -6,12 +6,10 @@ int main() {
   const unsigned int N=5;
   try {
     my_vector myVec = create_my_vector(N);
-    for (unsigned int i=0; i<(N*2); i++) {
-      safe_push_back_my_vector_element(myVec, i*3);
+    for (unsigned int i=0; i<N; i++) {
+      push_back_my_vector_element(myVec, i*3);
       print_my_vector_status(myVec);
     }
-
-    destroy_my_vector(myVec);
   } catch (string &err) {
     cout << err;
   }
