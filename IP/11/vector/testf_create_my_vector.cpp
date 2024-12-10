@@ -13,9 +13,10 @@ int main() {
       myVec.size++;
       myVec.store[i]=i*2;
     }
-    for (unsigned int i=0; i<myVec.size; i++) {
+    /*for (unsigned int i=0; i<myVec.size; i++) {
       cout<<myVec.store[i]<<endl;
-    }
+    }*/
+    print_my_vector_status(myVec);
     destroy_my_vector(myVec);
   } catch (string &err) {
     cout << err;
