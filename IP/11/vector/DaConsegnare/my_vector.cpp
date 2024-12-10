@@ -24,8 +24,9 @@ void print_my_vector_status(const my_vector &v) {
       cout << v.store[i] << (i < v.size - 1 ? ", " : " }\n");
     }
   } else {
-    cout <<  " }"<<endl;
+    cout << " }" << endl;
   }
+  cout << "**********************" << endl;
 }
 
 void push_back_my_vector_element(my_vector &v, double x) {
