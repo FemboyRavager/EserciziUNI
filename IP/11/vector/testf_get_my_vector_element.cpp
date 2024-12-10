@@ -4,8 +4,9 @@ using namespace std;
 
 int main() {
   const unsigned int N = 5;
+  my_vector myVec;
   try {
-    my_vector myVec = create_my_vector(N);
+    myVec = create_my_vector(N);
     cout << "\nNow starting appending of vector of size: " << myVec.size
          << endl;
     for (unsigned int i = 0; i < N; i++) {
