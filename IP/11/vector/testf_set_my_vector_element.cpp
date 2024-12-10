@@ -28,6 +28,7 @@ int main() {
     destroy_my_vector(myVec);
   } catch (string &err) {
     cout << err;
+    destroy_my_vector(myVec);
   }
   cout << "--------------------------------------------------" << endl;
   cout << "Secondo blocco try-catch per index>v.size-1: " << endl;
@@ -53,6 +54,7 @@ int main() {
     destroy_my_vector(myVec);
   } catch (string &err) {
     cout << err;
+    destroy_my_vector(myVec);
   }
 
   cout << "------------------------------------------" << endl;
@@ -68,5 +70,6 @@ int main() {
     destroy_my_vector(myVec);
   } catch (string &err) {
     cout << err;
+    destroy_my_vector(myVec);
   }
 }
