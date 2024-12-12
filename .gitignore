@@ -2,3 +2,6 @@
 **/*.zip
 **/*.out
 **/TramontaE-LAB*
+*.exe
+*.txt
+*.bat
