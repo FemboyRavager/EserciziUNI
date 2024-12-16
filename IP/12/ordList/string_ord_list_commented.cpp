@@ -9,32 +9,56 @@ void insertElement(ordList &l, string s) {
   ordList cur = l;
   ordList prev = cur;
   if (!l) {
+    // cerr << "List empty. Initializing.\n";
     l = new cell;
     l->next = nullptr;
     l->data = s;
+    // cerr << "List initialized to: " << l->data << " , next: " << l->next <<
+    // endl;
   } else {
     while (cur) {
+      // cerr << "Attempting to insert: " << s << endl;
+      // cerr << "Current cell: " << cur->data << " , next: " << cur->next <<
+      // endl;
       if (s < cur->data) {
         ordList aux = new cell;
         aux->next = cur;
         aux->data = s;
         if (cur == l) { // inserimento in testa
+          // cerr << "--Attempting to insert " << s << " at head" << endl;
           aux->next = cur;
           l = aux;
         } else {
+          // cerr << "--Attempting to insert " << s << " between " << prev->data
+          // << " and " << cur->data << endl;
           prev->next = aux;
+          // cerr << "--Inserted " << s << " before " << cur->data << endl;
         }
 
         return;
       }
       prev = cur;
       cur = cur->next;
+      // //cerr << "--Current cell: " << cur->data << " , next: " << cur->next
+      //      << endl;
+      // cerr << "==i: " << i << endl;
     }
+    // cerr << "--Reached end of list. Appending " << s << " after " <<
+    // prev->data  << endl;
     ordList aux = new cell;
     aux->data = s;
     aux->next = nullptr;
     prev->next = aux;
+    // cerr << "====END WHILE" << endl;
   }
+  // cerr << "======END INSERT" << endl;
+  /*cur = l;
+  int i = 0;
+  while (cur && i < 20) {
+    // cerr << cur->data << ((cur->next) ? "->" : "\n");
+    i++;
+    cur = cur->next;
+  }*/
 }
 
 // legge valori da input e li memorizza (aggiunge) nella lista ordinata l
@@ -71,6 +95,7 @@ unsigned int listSize(const ordList &l) {
   ordList cur = l;
   int i = 0;
   while (cur && i < 20) {
+    // cerr << cur->data << ((cur->next) ? "->" : "\n");
     i++;
     cur = cur->next;
   }
@@ -101,6 +126,7 @@ string getElement(const ordList &l, unsigned int i) {
   ordList cur = l;
   unsigned int j = 1;
   while (cur && j < i) {
+    // cerr << cur->data << ((cur->next) ? "->" : "\n");
     j++;
     cur = cur->next;
   }
@@ -122,21 +148,13 @@ void deleteElementAt(ordList &l, unsigned int i) {
   }
   ordList cur = l;
   ordList prev = l;
-
   for (unsigned int j = 0; j < (i - 1) && cur; j++) {
+    // cerr << "--" << cur->data << " | " << cur->next << endl;
     prev = cur;
     cur = cur->next;
   }
-  if (cur == l) { // first cell
-    l = l->next;
-    delete cur;
-  } else if (cur->next == nullptr) { // last cell
-    prev->next = nullptr;
-    delete cur;
-  } else {
-    prev->next = cur->next;
-    delete cur;
-  }
+  prev->next = cur->next;
+  delete cur;
 }
 
 // cancella dalla lista ordinata l il primo elemento contenente s
@@ -155,17 +173,16 @@ void deleteElementOnce(ordList &l, std::string s) {
     string child = "Element not present in list.";
     throw child;
   }
+  // cout<<"Found element "<<s<<endl;
   if (cur == l) { // first cell
     l = l->next;
     delete cur;
-  } else if (cur->next == nullptr) { // last cell
+  }
+  if (cur->next == nullptr) { // last cell
     prev->next = nullptr;
     delete cur;
-    return;
-  } else {
-    prev->next = cur->next;
-    delete cur;
   }
+  prev->next = cur->next;
 }
 
 // cancella dalla lista ordinata l tutti gli elementi contenenti s
@@ -177,20 +194,21 @@ void deleteAllElements(ordList &l, std::string s) {
   ordList cur = l;
   ordList prev = l;
   while (cur) {
+    // cerr << "Current cell data: " << cur->data<<endl;
     if (cur->data == s) {
       if (cur == l) { // s in prima cella
+        // cerr << s << " found in first cell";
+        delete l;
         l = l->next;
-        delete cur;
-        cur=l;
-      } else if (cur->next == nullptr) { // last cell
-        prev->next = nullptr;
-        delete cur;
-        return;
-      } else {
-        prev->next = cur->next;
-        delete cur;
-        cur = prev->next;
+        // print(l);
       }
+      /*
+      if (!cur->next) {
+        cerr << s << " found in last cell";
+      }
+      */
+      prev->next = cur->next;
+      cur = prev->next;
     } else {
       prev = cur;
       cur = cur->next;
@@ -255,12 +273,23 @@ ordList unionLists(const ordList &l1, const ordList &l2) {
   ordList cur2 = l2;
   bool alreadyPresent = false;
   while (cur1) {
+    // cerr << "\nnewList: ";
+    // printList(newList);
+    // cerr << "\nCurrent cur1: " << cur1->data << endl;
     alreadyPresent = false;
     if (cur1 == l1) {
+      // cerr << "\nInserting first element\n";
       insertElement(newList, cur1->data);
     } else {
+      // cerr << "\nEntered else. Current newListCur: ";
+      // printList(newListCur);
+      // cerr << endl;
       newListCur = newList;
       while (newListCur) {
+        // cerr << "==Current newListCur: ";
+        // printList(newListCur);
+        // cerr << "\n====Comparing " << cur1->data << " and " <<
+        // newListCur->data << endl;
         if (cur1->data == newListCur->data) {
           alreadyPresent = true;
         }
@@ -273,9 +302,19 @@ ordList unionLists(const ordList &l1, const ordList &l2) {
     cur1 = cur1->next;
   }
   while (cur2) {
+    // cerr << "\nnewList: ";
+    // printList(newList);
+    // cerr << "\nCurrent cur2: " << cur2->data << endl;
     alreadyPresent = false;
+    // cerr << "\nEntered else. Current newListCur: ";
+    // printList(newListCur);
+    // cerr << endl;
     newListCur = newList;
     while (newListCur) {
+      // cerr << "==Current newListCur: ";
+      // printList(newListCur);
+      // cerr << "\n====Comparing " << cur2->data << " and " <<
+      // newListCur->data << endl;
       if (cur2->data == newListCur->data) {
         alreadyPresent = true;
       }
@@ -311,6 +350,8 @@ ordList intersectLists(const ordList &l1, const ordList &l2) {
     }
     cur2 = l2;
     while (cur2) {
+      // cerr << "\n==Comparing " << cur1->data << " with " << cur2->data <<
+      // endl;
       if (cur1->data < cur2->data) {
         break;
       }
