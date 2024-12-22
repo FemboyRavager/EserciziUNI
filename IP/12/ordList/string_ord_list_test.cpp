@@ -76,7 +76,8 @@ int main() {
   printList(L1);
 
   deleteVictim = "bcd";
-  cerr << endl << "Inserting a bunch of identical elements in the middle" << endl;
+  cerr << endl
+       << "Inserting a bunch of identical elements in the middle" << endl;
   insertElement(L1, deleteVictim);
   insertElement(L1, deleteVictim);
   insertElement(L1, deleteVictim);
@@ -86,8 +87,6 @@ int main() {
   deleteAllElements(L1, deleteVictim);
   printList(L1);
 
-
-
   cerr << endl << endl << "Creating copy of list: ";
   ordList L2 = nullptr;
   insertElement(L2, "a");
@@ -95,25 +94,50 @@ int main() {
   insertElement(L2, "b");
   insertElement(L2, "c");
 
-  cerr << "\nL: ";
+  cerr << "\nL1: ";
   printList(L1);
   cerr << "\nL2: ";
   printList(L2);
-  cerr << endl << endl << "Testing listsAreEqual: " << endl;
+  cerr << endl << "Testing listsAreEqual: " << endl;
   cerr << (listAreEqual(L1, L2) ? "--Sono uguali\n" : "--Sono diverse\n");
-  cerr << "Inserisco elemento extra in L1" << endl;
-  insertElement(L1, "b");
+  cerr << "\nInserisco elemento extra diverso in L1";
+  insertElement(L1, "d");
+  cerr << "\nL1: ";
   printList(L1);
-  cerr << endl;
+  cerr << "\nL2: ";
   printList(L2);
   cerr << endl << "Testing listsAreEqual: " << endl;
   cerr << (listAreEqual(L1, L2) ? "--Sono uguali\n" : "--Sono diverse\n");
-
-  cerr << "\n\nNow testing concatList\n";
+  cerr << endl << "Rimuovo elemento extra diverso in L1";
+  deleteElementOnce(L1, "d");
+  cerr << "\nL1: ";
+  printList(L1);
+  cerr << "\nL2: ";
+  printList(L2);
+  cerr << "\nInserisco elemento extra multiplo (doppione) in L1";
+  insertElement(L1, "b");
+  cerr << "\nL1: ";
+  printList(L1);
+  cerr << "\nL2: ";
+  printList(L2);
+  cerr << endl
+       << (listAreEqual(L1, L2) ? "--Sono uguali\n" : "--Sono diverse\n");
+  cerr << endl << "----" << endl;
+  cerr << "\nNow testing concatList on:\n";
+  insertElement(L1, "g");
+  insertElement(L1, "0");
+  insertElement(L2, "?");
+  insertElement(L2, "y");
   ordList concatL = nullptr;
   concatL = concatLists(L1, L2);
+  cerr << "\nL1: ";
+  printList(L1);
+  cerr << "\nL2: ";
+  printList(L2);
   cerr << endl;
+  cerr << "concatList: ";
   printList(concatL);
+  cerr << endl;
 
   while (concatL) {
     // cerr << endl << "--deleting element: " << L2->data << endl;
@@ -122,7 +146,8 @@ int main() {
   }
   delete concatL;
 
-  cerr << "\n\nNow testing unionList with different lists\n";
+  cerr << endl << "----" << endl;
+  cerr << "\nNow testing unionList with different lists\n";
   insertElement(L1, "k");
   insertElement(L2, "4");
   insertElement(L2, "h");
@@ -145,7 +170,8 @@ int main() {
   }
   delete unitedList;
 
-  cerr << "\n\nNow testing intersectLists\n";
+  cerr << endl << "----" << endl;
+  cerr << "\nNow testing intersectLists\n";
   cerr << "\nL1: ";
   printList(L1);
   cerr << "\nL2: ";
@@ -162,6 +188,7 @@ int main() {
     deleteElementAt(intersectedList, 1);
   }
   delete intersectedList;
+  cerr << endl << "----" << endl;
   cerr << "Emptying lists L1 and L2";
   while (L1) {
     // cerr << endl << "--deleting element: " << L1->data << endl;

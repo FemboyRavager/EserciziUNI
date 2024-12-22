@@ -181,7 +181,7 @@ void deleteAllElements(ordList &l, std::string s) {
       if (cur == l) { // s in prima cella
         l = l->next;
         delete cur;
-        cur=l;
+        cur = l;
       } else if (cur->next == nullptr) { // last cell
         prev->next = nullptr;
         delete cur;
@@ -201,19 +201,23 @@ void deleteAllElements(ordList &l, std::string s) {
 // restituisce true se le due liste contengono le stesse stringhe (con la stessa
 // molteplicità) false altrimenti
 bool listAreEqual(const ordList &l1, const ordList &l2) {
+  if (!l1 && !l2)
+    return true;
   ordList cur1 = l1;
   ordList cur2 = l2;
-  bool areEqual = true;
-  while (cur1 && cur2 && areEqual) {
+  bool equal = true;
+  while (cur1 && cur2) {
     if (cur1->data != cur2->data) {
-      areEqual = false;
+      equal = false;
     }
     cur1 = cur1->next;
     cur2 = cur2->next;
   }
-  if (areEqual) {
-    return true;
+  if (cur1 || cur2) {
+    equal = false;
   }
+  if (equal)
+    return true;
   return false;
 }
 
