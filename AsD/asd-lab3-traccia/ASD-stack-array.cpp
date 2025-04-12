@@ -13,7 +13,6 @@ using namespace std;
 /**************************************************/
 /* restituisce lo stack vuoto */
 Stack stack::createEmpty() {
-  // to do
   Stack sret;
   sret.data = new Elem[BLOCKDIM];
   sret.size = 0;
@@ -30,13 +29,12 @@ bool stack::isEmpty(const Stack &st) {
 }
 
 void resize(Stack &st, bool increase) {
-  //cerr << "\nStarting resize, maxsize:"<<st.maxsize<<"\n";
   if (increase) {
     Elem *newData = new Elem[st.maxsize + BLOCKDIM];
     for (unsigned int i = 0; i < st.size; i++) {
       newData[i] = st.data[i];
     }
-    delete st.data;
+    delete[] st.data;
     st.data = newData;
     st.maxsize += BLOCKDIM;
   } else {
@@ -44,25 +42,19 @@ void resize(Stack &st, bool increase) {
     for (unsigned int i = 0; i < st.size; i++) {
       newData[i] = st.data[i];
     }
-    delete st.data;
+    delete[] st.data;
     st.data = newData;
     st.maxsize -= BLOCKDIM;
   }
-  //cerr << "\nNew size: " << st.maxsize << "\n";
 }
 
 /* aggiunge elem in cima (operazione safe, si può sempre fare) */
 void stack::push(const Elem el, Stack &st) {
-  // to do
   if (st.size == st.maxsize) {
     resize(st, 1);
-    //cerr << "==new maxsize: " << st.maxsize << endl;
   }
-  //cerr << endl << "PUSHING!";
   for (unsigned int i = 0; i < st.size; i++) {
-    //cerr << "[" << st.data[i] << "] ";
   }
-  //cerr << endl;
   st.data[st.size] = el;
   st.size++;
 }
@@ -70,7 +62,6 @@ void stack::push(const Elem el, Stack &st) {
 /* toglie dallo stack l'ultimo elemento e lo restituisce */
 /* se lo stack è vuoto solleva una eccezione di tipo string */
 Elem stack::pop(Stack &st) {
-  // to do
   if (st.size == 0) {
     string child;
     throw child;
@@ -88,7 +79,6 @@ Elem stack::pop(Stack &st) {
 /* restituisce l'ultimo elemento dello stack senza toglierlo.*/
 /* Se lo stack è vuoto solleva una eccezione di tipo string*/
 Elem stack::top(Stack &st) {
-  // to do
   if (st.size == 0) {
     string child;
     throw child;

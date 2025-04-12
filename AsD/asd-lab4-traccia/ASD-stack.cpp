@@ -1,6 +1,5 @@
 // FILE DA MODIFICARE
 #include "ASD-stack.h"
-#include <iostream>
 #include <string>
 
 using namespace my_stack;

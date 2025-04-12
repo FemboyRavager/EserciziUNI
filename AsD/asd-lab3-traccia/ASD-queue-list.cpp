@@ -21,7 +21,6 @@ struct queue::cell {
 
 /* restituisce la coda vuota */
 Queue queue::createEmpty() {
-  // to do
   Queue qret;
   qret.li = EMPTYLIST;
   qret.end = EMPTYLIST;
@@ -29,14 +28,10 @@ Queue queue::createEmpty() {
 }
 
 /* restituisce true se la queue e' vuota */
-bool queue::isEmpty(const Queue &q) {
-  // to do
-  return (q.li == EMPTYLIST);
-}
+bool queue::isEmpty(const Queue &q) { return (q.li == EMPTYLIST); }
 
 /* inserisce l'elemento "da una parte" della coda */
 void queue::enqueue(Elem e, Queue &q) {
-  // to do
   if (isEmpty(q)) {
     q.li = new cell;
     q.li->el = e;
@@ -58,43 +53,26 @@ void queue::enqueue(Elem e, Queue &q) {
 /*della coda" e lo restituisce; se la coda è vuota solleva */
 /*una eccezione di tipo string*/
 Elem queue::dequeue(Queue &q) {
-  //cerr << "\nCurrent list:\n";
   list cur = q.li;
   while (cur) {
-    //cerr << cur->el << "->";
     cur = cur->next;
   }
-  //cerr << endl;
-  //cerr << "End: " << q.end->el << endl;
-  // to do
   if (isEmpty(q)) {
     string child;
     throw child;
   }
   Elem ret = q.end->el;
-  // //cerr << "\nAAA\n";
-  //  q.end->prev->next = EMPTYLIST;
   if (q.end->prev) { // if end has a previous cell => more than one element
-
-    //cerr << "\nPiù di un elemento\n";
     list endPrev = q.end->prev;
-    //cerr << "endPrev: " << endPrev->el << endl;
-    // //cerr << "endTemp->prev: " << endTemp->prev->el<<endl;
     delete q.end;
-    //cerr << "endPrev: " << endPrev->el << endl;
     q.end = endPrev;
     q.end->next = EMPTYLIST;
-    //cerr << "end: " << q.end->el << endl;
-    //cerr << "Lista completa: ";
-    cur=q.li;
+    cur = q.li;
     while (cur) {
-      //cerr << cur->el << "->";
       cur = cur->next;
     }
-
     return ret;
   }
-  // only one element
   delete q.end;
   q.li = EMPTYLIST;
   return ret;
@@ -103,7 +81,6 @@ Elem queue::dequeue(Queue &q) {
 /* restituisce l'elemento in prima posizione (se esiste) senza cancellarlo*/
 /*se la coda è vuota solleva una eccezione di tipo string*/
 Elem queue::first(Queue &q) {
-  // to do
   if (isEmpty(q)) {
     string child;
     throw child;
