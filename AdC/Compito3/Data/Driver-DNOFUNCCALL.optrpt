@@ -1,0 +1,173 @@
+Intel(R) Advisor can now assist with vectorization and show optimization
+  report messages with your source code.
+See "https://software.intel.com/en-us/intel-advisor-xe" for details.
+
+Intel(R) C Intel(R) 64 Compiler Classic for applications running on Intel(R) 64, Version 2021.10.0 Build 20230609_000000
+
+Compiler options: -diag-disable=10441 -qopt-report=3 -qopt-report-phase=vec -DNOFUNCCALL -o MultNoFuncCall
+
+Begin optimization report for: main()
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at Driver.c(54,2) inlined into Driver.c(141,2)
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+
+   LOOP BEGIN at Driver.c(55,3) inlined into Driver.c(141,2)
+   <Peeled loop for vectorization>
+   LOOP END
+
+   LOOP BEGIN at Driver.c(55,3) inlined into Driver.c(141,2)
+      remark #15300: LOOP WAS VECTORIZED
+      remark #15449: unmasked aligned unit stride stores: 1 
+      remark #15475: --- begin vector cost summary ---
+      remark #15476: scalar cost: 113 
+      remark #15477: vector cost: 41.500 
+      remark #15478: estimated potential speedup: 2.690 
+      remark #15482: vectorized math library calls: 1 
+      remark #15487: type converts: 1 
+      remark #15488: --- end vector cost summary ---
+   LOOP END
+
+   LOOP BEGIN at Driver.c(55,3) inlined into Driver.c(141,2)
+   <Remainder loop for vectorization>
+   LOOP END
+LOOP END
+
+LOOP BEGIN at Driver.c(69,2) inlined into Driver.c(142,2)
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15449: unmasked aligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 112 
+   remark #15477: vector cost: 40.500 
+   remark #15478: estimated potential speedup: 2.740 
+   remark #15482: vectorized math library calls: 1 
+   remark #15487: type converts: 1 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at Driver.c(69,2) inlined into Driver.c(142,2)
+<Remainder loop for vectorization>
+LOOP END
+
+LOOP BEGIN at Driver.c(146,2)
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+
+   LOOP BEGIN at Driver.c(149,3)
+      remark #15542: loop was not vectorized: inner loop was already vectorized
+
+      LOOP BEGIN at Driver.c(151,4)
+         remark #15300: LOOP WAS VECTORIZED
+         remark #15448: unmasked aligned unit stride loads: 1 
+         remark #15450: unmasked unaligned unit stride loads: 1 
+         remark #15475: --- begin vector cost summary ---
+         remark #15476: scalar cost: 9 
+         remark #15477: vector cost: 4.500 
+         remark #15478: estimated potential speedup: 1.940 
+         remark #15488: --- end vector cost summary ---
+      LOOP END
+
+      LOOP BEGIN at Driver.c(151,4)
+      <Remainder loop for vectorization>
+      LOOP END
+   LOOP END
+LOOP END
+
+LOOP BEGIN at Driver.c(81,2) inlined into Driver.c(165,2)
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 6 
+   remark #15477: vector cost: 2.500 
+   remark #15478: estimated potential speedup: 2.180 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at Driver.c(81,2) inlined into Driver.c(165,2)
+<Remainder loop for vectorization>
+LOOP END
+===========================================================================
+
+Begin optimization report for: printsum(int, double *)
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at Driver.c(81,2)
+<Peeled loop for vectorization>
+LOOP END
+
+LOOP BEGIN at Driver.c(81,2)
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15442: entire loop may be executed in remainder
+   remark #15448: unmasked aligned unit stride loads: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 6 
+   remark #15477: vector cost: 2.500 
+   remark #15478: estimated potential speedup: 2.260 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at Driver.c(81,2)
+<Remainder loop for vectorization>
+LOOP END
+===========================================================================
+
+Begin optimization report for: init_array(int, double, double *)
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at Driver.c(69,2)
+<Peeled loop for vectorization>
+LOOP END
+
+LOOP BEGIN at Driver.c(69,2)
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15442: entire loop may be executed in remainder
+   remark #15449: unmasked aligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 112 
+   remark #15477: vector cost: 40.500 
+   remark #15478: estimated potential speedup: 2.730 
+   remark #15482: vectorized math library calls: 1 
+   remark #15487: type converts: 1 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at Driver.c(69,2)
+<Remainder loop for vectorization>
+LOOP END
+===========================================================================
+
+Begin optimization report for: init_matrix(int, int, double, double (*)[201])
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at Driver.c(54,2)
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+
+   LOOP BEGIN at Driver.c(55,3)
+   <Peeled loop for vectorization>
+   LOOP END
+
+   LOOP BEGIN at Driver.c(55,3)
+      remark #15300: LOOP WAS VECTORIZED
+      remark #15442: entire loop may be executed in remainder
+      remark #15449: unmasked aligned unit stride stores: 1 
+      remark #15475: --- begin vector cost summary ---
+      remark #15476: scalar cost: 113 
+      remark #15477: vector cost: 42.500 
+      remark #15478: estimated potential speedup: 2.630 
+      remark #15482: vectorized math library calls: 1 
+      remark #15487: type converts: 1 
+      remark #15488: --- end vector cost summary ---
+   LOOP END
+
+   LOOP BEGIN at Driver.c(55,3)
+   <Remainder loop for vectorization>
+   LOOP END
+LOOP END
+===========================================================================
