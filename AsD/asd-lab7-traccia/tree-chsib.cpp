@@ -29,7 +29,7 @@ bool tree::isEmpty(const Tree &t) { return (t == emptyTree); }
 
 Tree findNode(Tree t, Label labelOfNodeInTree) {
   // cerr << "Looking for " << labelOfNodeInTree << endl;
-  if (isEmpty(t)) {
+  if (isEmpty(t) || labelOfNodeInTree == emptyLabel) {
     // cerr << "\tNo more children sadge\n";
     return emptyTree;
   }
@@ -122,11 +122,15 @@ Error tree::addElem(const Label labelOfNodeInTree, const Label labelOfNodeToAdd,
 // FAIL se si tenta di cancellare la radice e questa ha dei figli (non si
 // saprebbe a che padre attaccarli) oppure se non esiste un nodo nell'albero
 // etichettato con la Label; cancella e restituisce OK altrimenti
-Error tree::deleteElemI(const Label l, Tree &t) { //odio
+Error tree::deleteElemI(
+    const Label l,
+    Tree &t) { // per favore mai più funzioni iterative su alberi,
+  // non so neanche spiegare come funziona sto codice, so solo che funziona per
+  // qualche miracolo
   if (t == emptyTree)
     return FAIL;
 
-  //nodo da cancellare è la radice
+  // nodo da cancellare è la radice
   if (t->label == l) {
     if (t->firstChild != emptyTree)
       return FAIL;
@@ -140,24 +144,24 @@ Error tree::deleteElemI(const Label l, Tree &t) { //odio
   Tree prev = emptyTree;
 
   while (current != emptyTree) {
-    //cerco tra i figli di current
+    // cerco tra i figli di current
     Tree child = current->firstChild;
     prev = emptyTree;
 
     while (child != emptyTree) {
       if (child->label == l) {
-        //trovato il nodo da cancellare
+        // trovato il nodo da cancellare
 
-        //collegamento dei figli di child al padre (current)
+        // collegamento dei figli di child al padre (current)
         if (prev == emptyTree) {
-          //child primo figlio
+          // child primo figlio
           current->firstChild = child->firstChild;
         } else {
-          //child è fratello più avanti
+          // child è fratello più avanti
           prev->nextSibling = child->firstChild;
         }
 
-        //se child ha figli, trova l’ultimo e collega il resto dei fratelli
+        // se child ha figli, trova l’ultimo e collega il resto dei fratelli
         if (child->firstChild != emptyTree) {
           Tree last = child->firstChild;
           while (last->nextSibling != emptyTree) {
@@ -165,7 +169,7 @@ Error tree::deleteElemI(const Label l, Tree &t) { //odio
           }
           last->nextSibling = child->nextSibling;
         } else {
-          //altrimenti collega direttamente il fratello successivo
+          // altrimenti collega direttamente il fratello successivo
           if (prev == emptyTree)
             current->firstChild = child->nextSibling;
           else
@@ -180,18 +184,18 @@ Error tree::deleteElemI(const Label l, Tree &t) { //odio
       child = child->nextSibling;
     }
 
-    //non trovato in current, passo al prossimo sottoalbero
+    // non trovato in current, passo al prossimo sottoalbero
     if (current->firstChild != emptyTree) {
       parent = current;
       current = current->firstChild;
     } else if (current->nextSibling != emptyTree) {
       current = current->nextSibling;
     } else {
-      //risalgo fino a trovare un fratello non ancora visitato
+      // risalgo fino a trovare un fratello non ancora visitato
       while (parent != emptyTree && parent->nextSibling == emptyTree) {
-        //risalita
+        // risalita
         current = parent;
-        //troviamo il nonno per risalire ancora (serve ciclo interno)
+        // troviamo il nonno per risalire ancora (serve ciclo interno)
         Tree finder = t;
         Tree auxParent = emptyTree;
         while (finder != emptyTree && finder->firstChild != current) {
@@ -215,7 +219,7 @@ Error tree::deleteElemI(const Label l, Tree &t) { //odio
       }
 
       current = parent->nextSibling;
-      //aggiorno nuovo parent
+      // aggiorno nuovo parent
       Tree finder = t;
       Tree tmpParent = emptyTree;
       while (finder != emptyTree && finder->firstChild != current) {
@@ -239,10 +243,123 @@ Error tree::deleteElemI(const Label l, Tree &t) { //odio
 }
 
 /*******************************************************************************************************/
+Error deleteElemAux(const Label l, Tree &t) {
+  if (isEmpty(t)) {
+    return FAIL;
+  }
+  // cerr << "= t: " << t->label << endl;
+  Tree removeTarget = emptyTree;
+  Tree firstChild = t->firstChild; // esploro i figli del nodo corrente
+  // cerr << "  Assigned first child\n";
+  if (isEmpty(firstChild)) { // non ha figli, vado ricorsivamente su fratelli
+    return deleteElemAux(l, t->nextSibling);
+  }
+  if (!isEmpty(firstChild) && firstChild->label == l) { // firstchild è da rimuovere
+    removeTarget = firstChild;  // name change per clarity
+
+    if (isEmpty(removeTarget->firstChild) && !isEmpty(removeTarget->nextSibling)) { // non ha figli, ha fratelli
+      t->firstChild = removeTarget->nextSibling; // padre t avrà come firstchild il fratello dell'ex first child
+      delete removeTarget;
+      return OK;
+    }
+    if (isEmpty(removeTarget->firstChild) && isEmpty(removeTarget->nextSibling)) { // no figli, no fratelli
+      t->firstChild = emptyTree; // in realtà removeTarget->nextSibling sarebbe comunque emptyTree quindi questo if è inutile
+      delete removeTarget;
+      return OK;
+    }
+    // se arrivo qui, removeTarget ha figli
+    Tree innocentChildren = removeTarget -> firstChild; // salvo puntatore a figli di nodo da rimuovere
+    while (innocentChildren->nextSibling) {
+      innocentChildren = innocentChildren->nextSibling;
+    }
+    // ora innocentChildren è all'ultimo figlio del nodo da rimuovere
+    innocentChildren->nextSibling = removeTarget->nextSibling; // connetto i figli del nodo da rimuo
+    t->firstChild = removeTarget->firstChild; // padre salta generazione
+    delete removeTarget;
+    return OK;
+  }
+  // first child non era il target o non esisteva, esploro siblings
+  // cerr << "  Starting to explore siblings\n";
+  Tree siblingExplorer = firstChild; // creo siblingExplorer per mantenere
+                                     // puntatore al firstChild di t
+  Tree prevSibling = firstChild;
+  // cerr << "  siblingExplorer: " << siblingExplorer->label << endl;
+  while (siblingExplorer->nextSibling && removeTarget == emptyTree) {
+    if (siblingExplorer->label == l) { // sibling da eliminare
+      removeTarget = siblingExplorer;
+      // cerr << "  Found removeTarget: " << removeTarget->label << endl;
+      continue;
+    }
+    prevSibling = siblingExplorer;
+    siblingExplorer = siblingExplorer->nextSibling;
+    // cerr << endl;
+    // cerr << "    prevSibling: " << prevSibling->label << endl;
+    // cerr << "    siblingExplorer: "<<siblingExplorer->label<<endl;
+    // cerr << "    removeTarget: "<<(!isEmpty(removeTarget) ?
+    // removeTarget->label : "emptyTree")<<endl;
+  }
+  // while non ripete per l'ultimo fratello data la condizione sull'esistenza di
+  // nextSibling, gestisco qui anche se è sporco
+  if (siblingExplorer->label == l) {
+    removeTarget = siblingExplorer;
+    // cerr << "  Found removeTarget: "<< removeTarget->label << endl;
+  }
+
+  if (!isEmpty(removeTarget)) { // removeTarget esiste
+    if (isEmpty(removeTarget->firstChild) && isEmpty(removeTarget->nextSibling)) { // non ha figli ne fratelli
+      prevSibling->nextSibling = emptyTree;
+      // cerr << "  Deleting: "<<removeTarget->label<<endl;
+      delete removeTarget;
+      return OK;
+    }
+    if (isEmpty(removeTarget->firstChild) && !isEmpty(removeTarget->nextSibling)) { // non ha figli, ha fratelli
+      prevSibling->nextSibling = removeTarget->nextSibling;
+      // cerr << " Deleting: "<<removeTarget->label<<" and connecting
+      // siblings"<<endl;
+      delete removeTarget;
+      return OK;
+    }
+    Tree innocentChildren = removeTarget->firstChild; // salvo puntatore a primo figlio del nodo da rimuovere
+    prevSibling->nextSibling = innocentChildren;
+    while (innocentChildren->nextSibling) {
+      innocentChildren = innocentChildren->nextSibling;
+    }
+    // innocentChildren è ora l'ultimo figlio del delete target
+    innocentChildren->nextSibling = removeTarget->nextSibling; // controllare in debugging
+    delete removeTarget;
+    return OK;
+  }
+  // cerr << "  Chiamata ricorsiva su figlio di " << t->label << endl;
+  Error childDeleted = deleteElemAux(l, t->firstChild); // change to return if
+                                                        // OK
+  if (childDeleted == OK) {
+    return OK;
+  }
+  // cerr << "  Chiamata ricorsiva su fratello di " << t->label << endl;
+  Error siblingDeleted = deleteElemAux(l, t->nextSibling);
+  if (siblingDeleted == OK) {
+    return OK;
+  }
+  return FAIL;
+}
+
 // deleteElem (versione ricorsiva): stesso comportamento della versione
 // iterativa, ma implementata ricorsivamente (può anche non essere ricorsiva la
 // deleteElemR, ma deve fare uso di funzioni ausiliarie ricorsive)
-Error tree::deleteElemR(const Label l, Tree &t) { return FAIL; }
+Error tree::deleteElemR(const Label l, Tree &t) {
+  if (!isEmpty(t) && t->label == l) { // sto cercando di cancellare radice
+    if (!isEmpty(t->firstChild)) {    // ha figlio
+      return FAIL;
+    }
+    delete t; // no figli, OK
+    t = createEmpty();
+    return OK;
+  }
+
+  return deleteElemAux(l, t);
+
+  return FAIL;
+}
 
 /*******************************************************************************************************/
 // father restituisce l'etichetta del padre del nodo con etichetta l se il nodo
@@ -314,6 +431,36 @@ int tree::degree(const Label l, const Tree &t) {
 }
 
 /*******************************************************************************************************/
+enum ancestorEnum {
+  FOUND,
+  ANCESTOR,
+  NOTFOUND
+}; // found e ancestor sono solo per chiarezza; in realtà sono trattati
+   // ugualmente
+
+ancestorEnum ancestorsLabels(const Label l, const Tree &t, list::List &lst) {
+  if (isEmpty(t)) {
+    return NOTFOUND;
+  }
+  // cerr << "Now visiting: " << t->label << endl;
+  if (t->label == l) {
+    // cerr << " Found node " << t->label << endl;
+    return FOUND;
+  }
+  ancestorEnum isFound;
+  isFound = ancestorsLabels(l, t->firstChild, lst);
+  if (isFound == FOUND || isFound == ANCESTOR) {
+    // cerr << " Adding " << t->label << " to list\n";
+    list::addFront(t->label, lst);
+    return ANCESTOR;
+  }
+  isFound = ancestorsLabels(l, t->nextSibling, lst);
+  if (isFound == FOUND || isFound == ANCESTOR) {
+    return ANCESTOR;
+  }
+  return NOTFOUND;
+}
+
 // ancestors (versione ricorsiva) restituisce una lista di Label, contenente le
 // etichette di tutti gli antenati del nodo l ESCLUSA l'etichetta del nodo
 // stesso La lista può essere implementata usando una delle strutture dati viste
@@ -321,6 +468,10 @@ int tree::degree(const Label l, const Tree &t) {
 // deve fare uso di funzioni ausiliarie ricorsive)
 list::List tree::ancestorsR(const Label l, const Tree &t) {
   list::List lst = list::createEmpty();
+  if (isEmpty(t)) {
+    return lst;
+  }
+  ancestorsLabels(l, t, lst);
   return lst;
 }
 
@@ -331,6 +482,18 @@ list::List tree::ancestorsR(const Label l, const Tree &t) {
 // a lezione (non un Vector)
 list::List tree::ancestorsI(const Label l, const Tree &t) {
   list::List lst = list::createEmpty();
+  // cerr << "Starting ancestorsI\n";
+
+  Tree target = findNode(t, l);
+  if (isEmpty(target)) {
+    return lst;
+  }
+  Label fatherLabel = father(target->label, t);
+  while (!isEmpty(findNode(t, fatherLabel))) {
+    list::addFront(fatherLabel, lst);
+    fatherLabel = father(fatherLabel, t);
+  }
+
   return lst;
 }
 
@@ -339,6 +502,17 @@ list::List tree::ancestorsI(const Label l, const Tree &t) {
 // ai nodi etichettati con label1 e label2
 Label tree::leastCommonAncestor(const Label label1, const Label label2,
                                 const Tree &t) {
+  list::List label1Ancestors = ancestorsI(label1, t);
+  list::List label2Ancestors = ancestorsI(label2, t);
+  Label lastMatch = emptyLabel;
+  int i;
+  for (i = 0; i < label1Ancestors.size || i < label2Ancestors.size; i++) {
+    if (label1Ancestors.list[i] == label2Ancestors.list[i]) {
+      lastMatch = label1Ancestors.list[i];
+    } else {
+      return lastMatch;
+    }
+  }
   return emptyLabel;
 }
 
@@ -363,7 +537,9 @@ int tree::numNodes(const Tree &t) {
 
 /*******************************************************************************************************/
 // createEmptyTree restituisce l'albero vuoto
-Tree tree::createEmpty() { return emptyTree; }
+Tree tree::createEmpty() { 
+  return emptyTree; 
+}
 
 /*******************************************************************************************************/
 
@@ -373,8 +549,7 @@ void printAux(const Tree t, int depth) {
     return;
   }
 
-  Tree auxTree =
-      t->nextSibling;      // ritorna da visite figli, assegna primo fratello
+  Tree auxTree = t->nextSibling;      // ritorna da visite figli, assegna primo fratello
   if (!isEmpty(auxTree)) { // while fratello esiste
     // cerr << "------Now executing call on sibling"<<auxTree->label<<endl;
     printAux(auxTree, depth);
