@@ -58,8 +58,10 @@ void moveDown(priorityQueue::PriorityQueue &pq) {
   while ( (pq.data[firstChild].timeStamp<pq.data[sinker].timeStamp && firstChild<pq.size) || ((pq.data[secondChild].timeStamp<pq.data[sinker].timeStamp && secondChild<pq.size))) { //esiste almeno un figlio
     //cerr << "\tAlmeno un figlio\n";
     if (firstChild<pq.size && secondChild<pq.size) { //ha 2 figli
-      //cerr << "\t Ha 2 figli";
+      //cerr << "\t Ha 2 figli\n";
       (pq.data[firstChild].timeStamp < pq.data[secondChild].timeStamp) ? minChild = firstChild : minChild = secondChild;
+      //cerr << "\t sinker index: "<< sinker<< " timestamp: "<<pq.data[sinker].timeStamp<<endl;
+      //cerr << "\t minChild index: "<< minChild<< " timestamp: "<<pq.data[minChild].timeStamp<<endl;
     } else if (secondChild>=pq.size) { //solo figlio SX
       //cerr << "\t Solo figlio SX";
       minChild = firstChild;
@@ -69,6 +71,9 @@ void moveDown(priorityQueue::PriorityQueue &pq) {
     }
     swapNodes(pq, sinker, minChild);
     sinker = minChild;
+    firstChild = sinker * 2 + 1;
+    secondChild = sinker * 2 + 2;
+
   }
 }
 
@@ -109,16 +114,16 @@ bool priorityQueue::isEmpty(const PriorityQueue &pq) {
 //   per ripristinare proprieta' dell'ordinamento a heap
 bool priorityQueue::insert(PriorityQueue &pq, const Elem &elem) {
   // TODO
-  // printPQ(pq);
+  //printPQ(pq);
   //cerr << "Inserting " << elem.veicolo->plate       << ", timestamp: " << elem.timeStamp << " on PQ: ";
   if (pq.size == pq.maxsize) {
     return false;
   }
   pq.data[pq.size] = elem;
   pq.size++;
-  // printPQ(pq);
+  //printPQ(pq);
   moveUp(pq, pq.size-1);
-  // printPQ(pq);
+  //printPQ(pq);
   //cerr << endl;
   return true;
 }
@@ -147,12 +152,12 @@ bool priorityQueue::deleteMin(PriorityQueue &pq) {
   if (pq.size == 0) {
     return false;
   }
-  // printPQ(pq);
+  //printPQ(pq);
   //cerr << "Popping elem "<< pq.data[0].veicolo->plate<<":"<<pq.data[0].timeStamp<<endl;
   pq.data[0] = pq.data[pq.size - 1];
   pq.size--;
   moveDown(pq);
-  // printPQ(pq);
+  //printPQ(pq);
   //cerr << endl;
   return true;
 }

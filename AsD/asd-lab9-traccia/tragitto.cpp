@@ -5,27 +5,28 @@ bool tragitto::isEmpty(Tragitto tr) { return (tr == tragittoVuoto); }
 
 // inserisce una Tappa in un Tragitto
 void tragitto::insert(Tragitto &tr, Tappa t) {
-  cerr << "\n\n";
-  cerr << "\nInserting: "<< t.distanza << " " << t.citta << " in tragitto: ";
+  //cerr << "\n\n";
+  //cerr << "\nInserting: "<< t.distanza << " " << t.citta << " in tragitto: ";
   //printTragitto(tr);
   if (isEmpty(tr)) {
-    cerr << "tr empty\n";
+    //cerr << "tr empty\n";
     Tragitto aux = new TragittoElem;
     aux->tappa = t;
+    aux->next = tragittoVuoto;
     tr = aux;
     return;
   }
-  cerr << "tr not empty\n";
+  //cerr << "tr not empty\n";
   Tragitto aux = new TragittoElem;
   aux->tappa = t;
   aux->next = tragittoVuoto;
   Tragitto cur = tr;
   while (cur->next) {
-    cerr << "At least two elem";
+    //cerr << "At least two elem";
     cur=cur->next;
-    cerr << "FUCK";
+    //cerr << "FUCK";
   }
-  cerr << "????";
+  //cerr << "????";
   cur->next = aux;
   // TO DO
 }
