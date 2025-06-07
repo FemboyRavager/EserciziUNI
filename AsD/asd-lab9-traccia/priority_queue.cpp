@@ -29,8 +29,8 @@ int minTimeStamp(priorityQueue::PriorityQueue pq, int index1, int index2) {
 
 void printPQ(priorityQueue::PriorityQueue pq) {
   cout << "Current PQ:    ";
-  for (int i=0;i<pq.size;i++) {
-    cout << "["<<pq.data[i].veicolo->plate<<":"<<pq.data[i].timeStamp<<"] ";
+  for (int i = 0; i < pq.size; i++) {
+    cout << "[" << pq.data[i].veicolo->plate << ":" << pq.data[i].timeStamp << "] ";
   }
   cout << endl;
 }
@@ -42,38 +42,37 @@ void swapNodes(priorityQueue::PriorityQueue &pq, int v1index, int v2index) {
 }
 
 void moveDown(priorityQueue::PriorityQueue &pq) {
-  //cerr << "moveDown:\n";
+  // cerr << "moveDown:\n";
   int sinker = 0;
-  if (pq.size < 2 ) {
+  if (pq.size < 2) {
     return;
   }
   int firstChild = sinker * 2 + 1;
   int secondChild = sinker * 2 + 2;
-  //cerr << " sinker: " << sinker << endl;
-  if (!pq.data[firstChild].veicolo && !pq.data[secondChild].veicolo && firstChild<pq.size && secondChild<pq.size) {
-    //cerr << "\tNo children\n";
+  // cerr << " sinker: " << sinker << endl;
+  if (!pq.data[firstChild].veicolo && !pq.data[secondChild].veicolo && firstChild < pq.size && secondChild < pq.size) {
+    // cerr << "\tNo children\n";
     return;
   }
   int minChild = 0;
-  while ( (pq.data[firstChild].timeStamp<pq.data[sinker].timeStamp && firstChild<pq.size) || ((pq.data[secondChild].timeStamp<pq.data[sinker].timeStamp && secondChild<pq.size))) { //esiste almeno un figlio
-    //cerr << "\tAlmeno un figlio\n";
-    if (firstChild<pq.size && secondChild<pq.size) { //ha 2 figli
-      //cerr << "\t Ha 2 figli\n";
+  while ((pq.data[firstChild].timeStamp < pq.data[sinker].timeStamp && firstChild < pq.size) || ((pq.data[secondChild].timeStamp < pq.data[sinker].timeStamp && secondChild < pq.size))) { // esiste almeno un figlio
+    // cerr << "\tAlmeno un figlio\n";
+    if (firstChild < pq.size && secondChild < pq.size) { // ha 2 figli
+      // cerr << "\t Ha 2 figli\n";
       (pq.data[firstChild].timeStamp < pq.data[secondChild].timeStamp) ? minChild = firstChild : minChild = secondChild;
-      //cerr << "\t sinker index: "<< sinker<< " timestamp: "<<pq.data[sinker].timeStamp<<endl;
-      //cerr << "\t minChild index: "<< minChild<< " timestamp: "<<pq.data[minChild].timeStamp<<endl;
-    } else if (secondChild>=pq.size) { //solo figlio SX
-      //cerr << "\t Solo figlio SX";
+      // cerr << "\t sinker index: "<< sinker<< " timestamp: "<<pq.data[sinker].timeStamp<<endl;
+      // cerr << "\t minChild index: "<< minChild<< " timestamp: "<<pq.data[minChild].timeStamp<<endl;
+    } else if (secondChild >= pq.size) { // solo figlio SX
+      // cerr << "\t Solo figlio SX";
       minChild = firstChild;
     } else {
-      //cerr << "\t Solo figlio DX";
+      // cerr << "\t Solo figlio DX";
       minChild = secondChild;
     }
     swapNodes(pq, sinker, minChild);
     sinker = minChild;
     firstChild = sinker * 2 + 1;
     secondChild = sinker * 2 + 2;
-
   }
 }
 
@@ -81,10 +80,10 @@ void moveUp(priorityQueue::PriorityQueue &pq, int floater) {
   // TODO
   ////cerr << "Move Up:\n";
   while (floater != 0 && pq.data[floater].timeStamp < pq.data[(floater - 1) / 2].timeStamp) {
-    //cerr << "\telem: " << pq.data[floater].timeStamp << " and father: " << pq.data[(floater - 1) / 2].timeStamp << endl;
-    // priorityQueue::Elem aux = pq.data[floater];
-    // pq.data[floater] = pq.data[(floater - 1) / 2];
-    // pq.data[(floater - 1) / 2] = aux;
+    // cerr << "\telem: " << pq.data[floater].timeStamp << " and father: " << pq.data[(floater - 1) / 2].timeStamp << endl;
+    //  priorityQueue::Elem aux = pq.data[floater];
+    //  pq.data[floater] = pq.data[(floater - 1) / 2];
+    //  pq.data[(floater - 1) / 2] = aux;
     swapNodes(pq, floater, (floater - 1) / 2);
     floater = (floater - 1) / 2;
   }
@@ -114,17 +113,17 @@ bool priorityQueue::isEmpty(const PriorityQueue &pq) {
 //   per ripristinare proprieta' dell'ordinamento a heap
 bool priorityQueue::insert(PriorityQueue &pq, const Elem &elem) {
   // TODO
-  //printPQ(pq);
-  //cerr << "Inserting " << elem.veicolo->plate       << ", timestamp: " << elem.timeStamp << " on PQ: ";
+  // printPQ(pq);
+  // cerr << "Inserting " << elem.veicolo->plate       << ", timestamp: " << elem.timeStamp << " on PQ: ";
   if (pq.size == pq.maxsize) {
     return false;
   }
   pq.data[pq.size] = elem;
   pq.size++;
-  //printPQ(pq);
-  moveUp(pq, pq.size-1);
-  //printPQ(pq);
-  //cerr << endl;
+  // printPQ(pq);
+  moveUp(pq, pq.size - 1);
+  // printPQ(pq);
+  // cerr << endl;
   return true;
 }
 
@@ -148,16 +147,16 @@ bool priorityQueue::findMin(const PriorityQueue &pq, Elem &res) {
 //   per ripristinare proprieta' dell'ordinamento a heap
 bool priorityQueue::deleteMin(PriorityQueue &pq) {
   // TODO
-  //cerr << "Calling deleteMin on pq of size: " << pq.size << endl;
+  // cerr << "Calling deleteMin on pq of size: " << pq.size << endl;
   if (pq.size == 0) {
     return false;
   }
-  //printPQ(pq);
-  //cerr << "Popping elem "<< pq.data[0].veicolo->plate<<":"<<pq.data[0].timeStamp<<endl;
+  // printPQ(pq);
+  // cerr << "Popping elem "<< pq.data[0].veicolo->plate<<":"<<pq.data[0].timeStamp<<endl;
   pq.data[0] = pq.data[pq.size - 1];
   pq.size--;
   moveDown(pq);
-  //printPQ(pq);
-  //cerr << endl;
+  // printPQ(pq);
+  // cerr << endl;
   return true;
 }
